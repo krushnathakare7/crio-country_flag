@@ -7,25 +7,17 @@ function App() {
 
   const [countryData, setCountryData] = useState([])
 
-  const fetchFlag = async () => {
-    try{
-      const rawdata = await fetch(`https://xcountries-backend.azurewebsites.net/all`)
-      const data = await rawdata.json();
-      return data;
-    }catch (e){
-      console.error(e)
-    }
-   
-  }
-
-
   useEffect(()=>{
-   const response = async () => {
-     const country = await fetchFlag()
-     setCountryData(country)
+   const fetchCountry = async () => {
+    try{
+      const response = await fetch(`https://xcountries-backend.azurewebsites.net/all`);
+      const data = await response.json();
+      setCountryData(data);
+    }catch(e){
+      console.error(e);
+    }
    }
-    response()
-   
+   fetchCountry()
   },[])
 
 
@@ -36,8 +28,8 @@ function App() {
       <h1>Krushna</h1>
      
       <div className='container' >
-        {countryData.map((ele)=> (
-          <div className='element' key={ele.abbr}>
+        {countryData.map((ele,i)=> (
+          <div className='element' key={i}>
             <img src={ele.flag} alt={ele.name} loading='lazy'/>
             <h1>{ele.name}</h1>
         </div>))}
